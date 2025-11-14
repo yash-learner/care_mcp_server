@@ -1,4 +1,5 @@
 """AI-friendly metadata enhancements for Care API operations."""
+
 from typing import Dict, List, Optional
 from dataclasses import dataclass
 
@@ -6,6 +7,7 @@ from dataclasses import dataclass
 @dataclass
 class ToolEnhancement:
     """Enhancement metadata for a tool."""
+
     title: str
     description: str
     tags: List[str]
@@ -14,7 +16,7 @@ class ToolEnhancement:
 
 class EnhancementManager:
     """Manage AI-friendly enhancements for API operations."""
-    
+
     # Enhanced metadata for key operations
     ENHANCEMENTS: Dict[str, ToolEnhancement] = {
         "facility_create": ToolEnhancement(
@@ -28,10 +30,9 @@ class EnhancementManager:
             examples=[
                 "Create a new hospital named 'City General Hospital'",
                 "Add a COVID care center in downtown",
-                "Register a new clinic facility"
-            ]
+                "Register a new clinic facility",
+            ],
         ),
-        
         "facility_list": ToolEnhancement(
             title="🏥 List Healthcare Facilities",
             description=(
@@ -43,10 +44,9 @@ class EnhancementManager:
             examples=[
                 "Show me all hospitals in Maharashtra",
                 "List COVID care centers in Kerala",
-                "Find all facilities in Mumbai district"
-            ]
+                "Find all facilities in Mumbai district",
+            ],
         ),
-        
         "facility_retrieve": ToolEnhancement(
             title="🏥 Get Facility Details",
             description=(
@@ -57,10 +57,9 @@ class EnhancementManager:
             examples=[
                 "Get details of facility ID 123",
                 "Show me information about City General Hospital",
-                "What are the details of this facility?"
-            ]
+                "What are the details of this facility?",
+            ],
         ),
-        
         "facility_update": ToolEnhancement(
             title="🏥 Update Facility Information",
             description=(
@@ -71,10 +70,9 @@ class EnhancementManager:
             examples=[
                 "Update the phone number for facility ID 123",
                 "Change the capacity of City General Hospital",
-                "Modify facility address"
-            ]
+                "Modify facility address",
+            ],
         ),
-        
         "organization_create": ToolEnhancement(
             title="🏢 Create Organization",
             description=(
@@ -86,10 +84,9 @@ class EnhancementManager:
             examples=[
                 "Create a new health department organization",
                 "Register an NGO organization",
-                "Add a new organization for managing facilities"
-            ]
+                "Add a new organization for managing facilities",
+            ],
         ),
-        
         "organization_list": ToolEnhancement(
             title="🏢 List Organizations",
             description=(
@@ -100,22 +97,18 @@ class EnhancementManager:
             examples=[
                 "Show me all organizations",
                 "List health department organizations",
-                "Find organizations in this state"
-            ]
+                "Find organizations in this state",
+            ],
         ),
-        
         "organization_retrieve": ToolEnhancement(
             title="🏢 Get Organization Details",
-            description=(
-                "Retrieve detailed information about a specific organization."
-            ),
+            description=("Retrieve detailed information about a specific organization."),
             tags=["organization", "query", "detail"],
             examples=[
                 "Get details of organization ID 456",
-                "Show me information about State Health Department"
-            ]
+                "Show me information about State Health Department",
+            ],
         ),
-        
         "bed_create": ToolEnhancement(
             title="🛏️ Create Bed",
             description=(
@@ -126,10 +119,9 @@ class EnhancementManager:
             examples=[
                 "Add 10 ICU beds to facility",
                 "Create oxygen beds in this hospital",
-                "Register new HDU beds"
-            ]
+                "Register new HDU beds",
+            ],
         ),
-        
         "bed_list": ToolEnhancement(
             title="🛏️ List Beds",
             description=(
@@ -140,35 +132,21 @@ class EnhancementManager:
             examples=[
                 "Show available ICU beds",
                 "List all beds in this facility",
-                "Find oxygen beds in the district"
-            ]
+                "Find oxygen beds in the district",
+            ],
         ),
-        
         "bed_retrieve": ToolEnhancement(
             title="🛏️ Get Bed Details",
-            description=(
-                "Retrieve detailed information about a specific bed resource."
-            ),
+            description=("Retrieve detailed information about a specific bed resource."),
             tags=["bed", "query", "detail", "capacity"],
-            examples=[
-                "Get details of bed ID 789",
-                "Show me information about this bed"
-            ]
+            examples=["Get details of bed ID 789", "Show me information about this bed"],
         ),
-        
         "bed_update": ToolEnhancement(
             title="🛏️ Update Bed Information",
-            description=(
-                "Update bed information including availability status and metadata."
-            ),
+            description=("Update bed information including availability status and metadata."),
             tags=["bed", "update", "modify", "capacity"],
-            examples=[
-                "Update bed availability",
-                "Mark bed as occupied",
-                "Change bed type"
-            ]
+            examples=["Update bed availability", "Mark bed as occupied", "Change bed type"],
         ),
-        
         "users_list": ToolEnhancement(
             title="👤 List Users",
             description=(
@@ -176,38 +154,24 @@ class EnhancementManager:
                 "Useful for user management and access control."
             ),
             tags=["user", "query", "list"],
-            examples=[
-                "Show all users",
-                "List doctors in the facility",
-                "Find staff members"
-            ]
+            examples=["Show all users", "List doctors in the facility", "Find staff members"],
         ),
-        
         "users_retrieve": ToolEnhancement(
             title="👤 Get User Details",
-            description=(
-                "Retrieve detailed information about a specific user."
-            ),
+            description=("Retrieve detailed information about a specific user."),
             tags=["user", "query", "detail"],
-            examples=[
-                "Get user details for ID 101",
-                "Show me Dr. Smith's information"
-            ]
+            examples=["Get user details for ID 101", "Show me Dr. Smith's information"],
         ),
-        
         "users_getcurrentuser": ToolEnhancement(
             title="👤 Get Current User",
-            description=(
-                "Retrieve information about the currently authenticated user."
-            ),
+            description=("Retrieve information about the currently authenticated user."),
             tags=["user", "query", "auth"],
             examples=[
                 "Who am I logged in as?",
                 "Show my user information",
-                "Get current user details"
-            ]
+                "Get current user details",
+            ],
         ),
-        
         "state_list": ToolEnhancement(
             title="🗺️ List States",
             description=(
@@ -215,27 +179,20 @@ class EnhancementManager:
                 "Useful for geographic filtering and organization."
             ),
             tags=["geography", "query", "list"],
-            examples=[
-                "List all states",
-                "Show available states",
-                "What states are in the system?"
-            ]
+            examples=["List all states", "Show available states", "What states are in the system?"],
         ),
-        
         "district_list": ToolEnhancement(
             title="🗺️ List Districts",
             description=(
-                "Retrieve a list of districts within a state. "
-                "Helps with location-based queries."
+                "Retrieve a list of districts within a state. " "Helps with location-based queries."
             ),
             tags=["geography", "query", "list"],
             examples=[
                 "List districts in Maharashtra",
                 "Show all districts",
-                "What districts are available?"
-            ]
+                "What districts are available?",
+            ],
         ),
-        
         "localBody_list": ToolEnhancement(
             title="🗺️ List Local Bodies",
             description=(
@@ -245,10 +202,9 @@ class EnhancementManager:
             examples=[
                 "List local bodies in this district",
                 "Show municipalities",
-                "What local bodies are available?"
-            ]
+                "What local bodies are available?",
+            ],
         ),
-        
         "ward_list": ToolEnhancement(
             title="🗺️ List Wards",
             description=(
@@ -259,30 +215,30 @@ class EnhancementManager:
             examples=[
                 "List wards in this local body",
                 "Show all wards",
-                "What wards are available?"
-            ]
+                "What wards are available?",
+            ],
         ),
     }
-    
+
     def get_enhancement(self, operation_id: str) -> Optional[ToolEnhancement]:
         """
         Get enhancement metadata for an operation.
-        
+
         Args:
             operation_id: The operation ID to get enhancement for
-            
+
         Returns:
             ToolEnhancement or None if not found
         """
         return self.ENHANCEMENTS.get(operation_id)
-    
+
     def has_enhancement(self, operation_id: str) -> bool:
         """
         Check if an operation has enhancement metadata.
-        
+
         Args:
             operation_id: The operation ID to check
-            
+
         Returns:
             True if enhancement exists, False otherwise
         """
