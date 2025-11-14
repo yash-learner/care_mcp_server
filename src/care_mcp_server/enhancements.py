@@ -17,9 +17,9 @@ class ToolEnhancement:
 class EnhancementManager:
     """Manage AI-friendly enhancements for API operations."""
 
-    # Enhanced metadata for key operations
+    # Enhanced metadata for key operations (matching actual Care API operation IDs)
     ENHANCEMENTS: Dict[str, ToolEnhancement] = {
-        "facility_create": ToolEnhancement(
+        "api_v1_facility_create": ToolEnhancement(
             title="🏥 Create Healthcare Facility",
             description=(
                 "Create a new healthcare facility in the Care system. "
@@ -33,7 +33,7 @@ class EnhancementManager:
                 "Register a new clinic facility",
             ],
         ),
-        "facility_list": ToolEnhancement(
+        "api_v1_facility_list": ToolEnhancement(
             title="🏥 List Healthcare Facilities",
             description=(
                 "Retrieve a list of healthcare facilities registered in the system. "
@@ -47,7 +47,7 @@ class EnhancementManager:
                 "Find all facilities in Mumbai district",
             ],
         ),
-        "facility_retrieve": ToolEnhancement(
+        "api_v1_facility_retrieve": ToolEnhancement(
             title="🏥 Get Facility Details",
             description=(
                 "Retrieve detailed information about a specific healthcare facility. "
@@ -60,7 +60,7 @@ class EnhancementManager:
                 "What are the details of this facility?",
             ],
         ),
-        "facility_update": ToolEnhancement(
+        "api_v1_facility_update": ToolEnhancement(
             title="🏥 Update Facility Information",
             description=(
                 "Update information for an existing healthcare facility. "
@@ -73,7 +73,7 @@ class EnhancementManager:
                 "Modify facility address",
             ],
         ),
-        "organization_create": ToolEnhancement(
+        "api_v1_organization_create": ToolEnhancement(
             title="🏢 Create Organization",
             description=(
                 "Create a new organization in the Care system. "
@@ -87,7 +87,7 @@ class EnhancementManager:
                 "Add a new organization for managing facilities",
             ],
         ),
-        "organization_list": ToolEnhancement(
+        "api_v1_organization_list": ToolEnhancement(
             title="🏢 List Organizations",
             description=(
                 "Retrieve a list of organizations in the system. "
@@ -100,7 +100,7 @@ class EnhancementManager:
                 "Find organizations in this state",
             ],
         ),
-        "organization_retrieve": ToolEnhancement(
+        "api_v1_organization_retrieve": ToolEnhancement(
             title="🏢 Get Organization Details",
             description=("Retrieve detailed information about a specific organization."),
             tags=["organization", "query", "detail"],
@@ -109,45 +109,41 @@ class EnhancementManager:
                 "Show me information about State Health Department",
             ],
         ),
-        "bed_create": ToolEnhancement(
-            title="🛏️ Create Bed",
+        "api_v1_facility_location_create": ToolEnhancement(
+            title="📍 Create Location",
             description=(
-                "Create a new bed resource in a facility. "
-                "Specify bed type (ICU, HDU, oxygen, etc.) and associated facility."
+                "Create a new location within a healthcare facility. "
+                "Locations represent wards, rooms, or specific areas within a facility."
             ),
-            tags=["bed", "setup", "create", "capacity"],
+            tags=["location", "setup", "create", "facility"],
             examples=[
-                "Add 10 ICU beds to facility",
-                "Create oxygen beds in this hospital",
-                "Register new HDU beds",
+                "Add ICU ward to facility",
+                "Create emergency room location",
+                "Register new isolation ward",
             ],
         ),
-        "bed_list": ToolEnhancement(
-            title="🛏️ List Beds",
+        "api_v1_facility_location_list": ToolEnhancement(
+            title="📍 List Locations",
             description=(
-                "Retrieve a list of beds with their availability status. "
-                "Filter by facility, bed type, and availability."
+                "Retrieve a list of locations within a facility. "
+                "Filter by location type and availability."
             ),
-            tags=["bed", "query", "list", "capacity"],
+            tags=["location", "query", "list", "facility"],
             examples=[
-                "Show available ICU beds",
-                "List all beds in this facility",
-                "Find oxygen beds in the district",
+                "Show all locations in this facility",
+                "List ICU wards",
+                "Find available isolation rooms",
             ],
         ),
-        "bed_retrieve": ToolEnhancement(
-            title="🛏️ Get Bed Details",
-            description=("Retrieve detailed information about a specific bed resource."),
-            tags=["bed", "query", "detail", "capacity"],
-            examples=["Get details of bed ID 789", "Show me information about this bed"],
+        "api_v1_facility_location_retrieve": ToolEnhancement(
+            title="📍 Get Location Details",
+            description=(
+                "Retrieve detailed information about a specific location within a facility."
+            ),
+            tags=["location", "query", "detail", "facility"],
+            examples=["Get details of location", "Show me information about this ward"],
         ),
-        "bed_update": ToolEnhancement(
-            title="🛏️ Update Bed Information",
-            description=("Update bed information including availability status and metadata."),
-            tags=["bed", "update", "modify", "capacity"],
-            examples=["Update bed availability", "Mark bed as occupied", "Change bed type"],
-        ),
-        "users_list": ToolEnhancement(
+        "api_v1_users_list": ToolEnhancement(
             title="👤 List Users",
             description=(
                 "Retrieve a list of users in the system. "
@@ -156,13 +152,13 @@ class EnhancementManager:
             tags=["user", "query", "list"],
             examples=["Show all users", "List doctors in the facility", "Find staff members"],
         ),
-        "users_retrieve": ToolEnhancement(
+        "api_v1_users_retrieve": ToolEnhancement(
             title="👤 Get User Details",
             description=("Retrieve detailed information about a specific user."),
             tags=["user", "query", "detail"],
             examples=["Get user details for ID 101", "Show me Dr. Smith's information"],
         ),
-        "users_getcurrentuser": ToolEnhancement(
+        "api_v1_users_getcurrentuser_retrieve": ToolEnhancement(
             title="👤 Get Current User",
             description=("Retrieve information about the currently authenticated user."),
             tags=["user", "query", "auth"],
@@ -172,51 +168,39 @@ class EnhancementManager:
                 "Get current user details",
             ],
         ),
-        "state_list": ToolEnhancement(
-            title="🗺️ List States",
+        "api_v1_patient_list": ToolEnhancement(
+            title="🏥 List Patients",
             description=(
-                "Retrieve a list of states/provinces in the system. "
-                "Useful for geographic filtering and organization."
+                "Retrieve a list of patients in the system. "
+                "Filter by facility, status, and other parameters."
             ),
-            tags=["geography", "query", "list"],
-            examples=["List all states", "Show available states", "What states are in the system?"],
-        ),
-        "district_list": ToolEnhancement(
-            title="🗺️ List Districts",
-            description=(
-                "Retrieve a list of districts within a state. " "Helps with location-based queries."
-            ),
-            tags=["geography", "query", "list"],
+            tags=["patient", "query", "list"],
             examples=[
-                "List districts in Maharashtra",
-                "Show all districts",
-                "What districts are available?",
+                "Show all patients",
+                "List patients in this facility",
+                "Find active patients",
             ],
         ),
-        "localBody_list": ToolEnhancement(
-            title="🗺️ List Local Bodies",
-            description=(
-                "Retrieve a list of local bodies (municipalities, corporations) within a district."
-            ),
-            tags=["geography", "query", "list"],
-            examples=[
-                "List local bodies in this district",
-                "Show municipalities",
-                "What local bodies are available?",
-            ],
+        "api_v1_patient_retrieve": ToolEnhancement(
+            title="🏥 Get Patient Details",
+            description=("Retrieve detailed information about a specific patient."),
+            tags=["patient", "query", "detail"],
+            examples=["Get patient details", "Show patient information"],
         ),
-        "ward_list": ToolEnhancement(
-            title="🗺️ List Wards",
+        "api_v1_encounter_list": ToolEnhancement(
+            title="📋 List Encounters",
             description=(
-                "Retrieve a list of wards within a local body. "
-                "Most granular level of geographic organization."
+                "Retrieve a list of patient encounters (visits, admissions). "
+                "Encounters represent patient interactions with the healthcare system."
             ),
-            tags=["geography", "query", "list"],
-            examples=[
-                "List wards in this local body",
-                "Show all wards",
-                "What wards are available?",
-            ],
+            tags=["encounter", "query", "list"],
+            examples=["Show all encounters", "List patient visits", "Find active admissions"],
+        ),
+        "api_v1_encounter_retrieve": ToolEnhancement(
+            title="📋 Get Encounter Details",
+            description=("Retrieve detailed information about a specific patient encounter."),
+            tags=["encounter", "query", "detail"],
+            examples=["Get encounter details", "Show visit information"],
         ),
     }
 

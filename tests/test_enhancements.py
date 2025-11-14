@@ -12,7 +12,7 @@ def test_enhancement_manager_has_enhancements():
 def test_get_enhancement_for_existing_operation():
     """Test getting enhancement for an operation that has one."""
     manager = EnhancementManager()
-    enhancement = manager.get_enhancement("facility_create")
+    enhancement = manager.get_enhancement("api_v1_facility_create")
 
     assert enhancement is not None
     assert isinstance(enhancement, ToolEnhancement)
@@ -34,8 +34,8 @@ def test_get_enhancement_for_non_existing_operation():
 def test_has_enhancement_true():
     """Test has_enhancement returns True for enhanced operations."""
     manager = EnhancementManager()
-    assert manager.has_enhancement("facility_create") is True
-    assert manager.has_enhancement("bed_list") is True
+    assert manager.has_enhancement("api_v1_facility_create") is True
+    assert manager.has_enhancement("api_v1_patient_list") is True
 
 
 def test_has_enhancement_false():
@@ -47,7 +47,7 @@ def test_has_enhancement_false():
 def test_enhancement_structure():
     """Test enhancement has required structure."""
     manager = EnhancementManager()
-    enhancement = manager.get_enhancement("facility_list")
+    enhancement = manager.get_enhancement("api_v1_facility_list")
 
     assert hasattr(enhancement, "title")
     assert hasattr(enhancement, "description")
@@ -63,12 +63,11 @@ def test_all_whitelisted_operations_have_enhancements():
 
     # Check some key operations
     key_operations = [
-        "facility_create",
-        "facility_list",
-        "bed_create",
-        "bed_list",
-        "users_list",
-        "state_list",
+        "api_v1_facility_create",
+        "api_v1_facility_list",
+        "api_v1_organization_create",
+        "api_v1_users_list",
+        "api_v1_patient_list",
     ]
 
     for op in key_operations:

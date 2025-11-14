@@ -7,35 +7,41 @@ import yaml
 class WhitelistManager:
     """Manage allowed API operations."""
 
-    # Default whitelist of allowed operations
+    # Default whitelist of allowed operations (matching actual Care API)
     DEFAULT_WHITELIST = [
         # Facility operations
-        "facility_create",
-        "facility_list",
-        "facility_retrieve",
-        "facility_update",
+        "api_v1_facility_create",
+        "api_v1_facility_list",
+        "api_v1_facility_retrieve",
+        "api_v1_facility_update",
+        "api_v1_facility_partial_update",
         # Organization operations
-        "organization_create",
-        "organization_list",
-        "organization_retrieve",
-        # Location operations
-        "location_create",
-        "location_list",
-        "location_retrieve",
-        # Bed operations
-        "bed_create",
-        "bed_list",
-        "bed_retrieve",
-        "bed_update",
+        "api_v1_organization_create",
+        "api_v1_organization_list",
+        "api_v1_organization_retrieve",
+        "api_v1_organization_update",
+        "api_v1_organization_partial_update",
+        # Location operations (facility-scoped)
+        "api_v1_facility_location_create",
+        "api_v1_facility_location_list",
+        "api_v1_facility_location_retrieve",
+        "api_v1_facility_location_update",
+        "api_v1_facility_location_partial_update",
         # User operations
-        "users_list",
-        "users_retrieve",
-        "users_getcurrentuser",
-        # Geography operations
-        "state_list",
-        "district_list",
-        "localBody_list",
-        "ward_list",
+        "api_v1_users_list",
+        "api_v1_users_retrieve",
+        "api_v1_users_getcurrentuser_retrieve",
+        "api_v1_facility_users_list",
+        "api_v1_facility_users_retrieve",
+        # Patient operations (read-only)
+        "api_v1_patient_list",
+        "api_v1_patient_retrieve",
+        # Encounter operations (read-only)
+        "api_v1_encounter_list",
+        "api_v1_encounter_retrieve",
+        # Resource operations (read-only)
+        "api_v1_resource_list",
+        "api_v1_resource_retrieve",
     ]
 
     # Patterns for blocked operations
