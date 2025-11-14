@@ -1,0 +1,46 @@
+enhancements:
+  - operation_id: facility_create
+    title: "🏥 Create Healthcare Facility"
+    description: |
+      Create a new hospital, clinic, or healthcare facility.
+
+      This is the first step in setting up a new healthcare location.
+      Provide facility name, type, address, contacts, and administrative details.
+    tags: [setup, hospital, onboarding, facility]
+    examples:
+      - Create a new district hospital in Kerala
+      - Set up a COVID care center in Mumbai
+      - Register a primary health center
+  - operation_id: organization_create
+    title: "🏢 Create Healthcare Organization"
+    description: |
+      Create a healthcare organization such as a hospital network or health department.
+
+      Organizations manage groups of facilities and administrative hierarchies.
+    tags: [setup, organization, onboarding]
+    examples:
+      - Create a state health department organization
+      - Set up a hospital chain network
+      - Register an NGO healthcare organization
+  - operation_id: location_create
+    title: "📍 Create Location Within Facility"
+    description: |
+      Create specific locations like wards or departments within a facility.
+
+      Helps with patient tracking, bed management, and resource allocation.
+    tags: [setup, location, facility-management]
+    examples:
+      - Add ICU ward to a hospital
+      - Create OPD consultation rooms
+      - Set up pharmacy location
+  - operation_id: bed_create
+    title: "🛏️ Create and Register Beds"
+    description: |
+      Register beds within a facility for patient and capacity management.
+
+      Track availability, occupancy, and allocate beds to patients.
+    tags: [setup, bed-management, capacity]
+    examples:
+      - Add 10 ICU beds to the facility
+      - Register 50 general ward beds
+      - Set up 5 isolation beds
