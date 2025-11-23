@@ -49,7 +49,7 @@ class Config(BaseSettings):
     @property
     def login_url(self) -> str:
         """Get the login URL."""
-        return f"{self.care_base_url.rstrip('/')}/api/v1/auth/login"
+        return f"{self.care_base_url.rstrip('/')}/api/v1/auth/login/"
 
     def has_credentials(self) -> bool:
         """Check if credentials are configured."""

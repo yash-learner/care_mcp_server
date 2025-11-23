@@ -118,6 +118,14 @@ class ToolGenerator:
         async def api_call(**kwargs) -> Dict[str, Any]:
             """Execute API call with provided parameters."""
             try:
+                # Handle the case where arguments are passed as a JSON string in 'kwargs'
+                if "kwargs" in kwargs and isinstance(kwargs["kwargs"], str) and len(kwargs) == 1:
+                    import json
+                    try:
+                        kwargs = json.loads(kwargs["kwargs"])
+                    except json.JSONDecodeError:
+                        pass
+
                 # Separate parameters by location
                 path_params = {}
                 query_params = {}

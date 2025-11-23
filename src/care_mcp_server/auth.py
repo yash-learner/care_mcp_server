@@ -48,7 +48,10 @@ class AuthHandler:
             True if login successful, False otherwise.
         """
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(follow_redirects=True) as client:
+                print(f"   Attempting login to: {self.config.login_url}")
+                print(f"   Username: {self.config.care_username}")
+
                 response = await client.post(
                     self.config.login_url,
                     json={
@@ -58,15 +61,29 @@ class AuthHandler:
                     timeout=30.0,
                 )
 
+                print(f"   Response status: {response.status_code}")
+                print(f"   Response URL: {response.url}")
+                if response.headers.get('location'):
+                    print(f"   Redirect location: {response.headers.get('location')}")
+
                 if response.status_code == 200:
-                    data = response.json()
-                    self.access_token = data.get("access")
-                    self.refresh_token = data.get("refresh")
+                    try:
+                        data = response.json()
+                        self.access_token = data.get("access")
+                        self.refresh_token = data.get("refresh")
 
-                    # Set token expiry (default 1 hour from now)
-                    self.token_expiry = time.time() + self.default_token_lifetime
+                        if not self.access_token:
+                            print(f"   Warning: No access token in response: {data}")
+                            return False
 
-                    return True
+                        # Set token expiry (default 1 hour from now)
+                        self.token_expiry = time.time() + self.default_token_lifetime
+
+                        return True
+                    except Exception as json_error:
+                        print(f"   Error parsing JSON response: {json_error}")
+                        print(f"   Raw response: {response.text}")
+                        return False
                 else:
                     print(f"Login failed: {response.status_code} - {response.text}")
                     return False

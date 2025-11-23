@@ -74,7 +74,7 @@ async def initialize() -> FastMCP:
 
     # Initialize FastMCP
     print("\n[5/6] Creating MCP server...")
-    mcp = FastMCP(name=config.server_name, version=config.server_version)
+    mcp = FastMCP(name=config.server_name)
 
     # Generate and register tools
     print("\n[6/6] Generating MCP tools...")
