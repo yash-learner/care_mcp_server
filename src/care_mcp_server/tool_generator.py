@@ -119,12 +119,15 @@ class ToolGenerator:
             """Execute API call with provided parameters."""
             try:
                 # Handle the case where arguments are passed as a JSON string in 'kwargs'
-                if "kwargs" in kwargs and isinstance(kwargs["kwargs"], str) and len(kwargs) == 1:
-                    import json
-                    try:
-                        kwargs = json.loads(kwargs["kwargs"])
-                    except json.JSONDecodeError:
-                        pass
+                if "kwargs" in kwargs and len(kwargs) == 1:
+                    if isinstance(kwargs["kwargs"], str):
+                        import json
+                        try:
+                            kwargs = json.loads(kwargs["kwargs"])
+                        except json.JSONDecodeError:
+                            pass
+                    elif isinstance(kwargs["kwargs"], dict):
+                        kwargs = kwargs["kwargs"]
 
                 # Separate parameters by location
                 path_params = {}
@@ -154,45 +157,62 @@ class ToolGenerator:
                 # Build URL with path parameters
                 url = self._build_url(path, path_params)
 
+                # Helper function to make request
+                async def make_request(request_headers):
+                    async with httpx.AsyncClient() as client:
+                        if method == "GET":
+                            return await client.get(
+                                url, headers=request_headers, params=query_params, timeout=30.0
+                            )
+                        elif method == "POST":
+                            return await client.post(
+                                url,
+                                headers=request_headers,
+                                params=query_params,
+                                json=body_data if body_data else None,
+                                timeout=30.0,
+                            )
+                        elif method == "PUT":
+                            return await client.put(
+                                url,
+                                headers=request_headers,
+                                params=query_params,
+                                json=body_data if body_data else None,
+                                timeout=30.0,
+                            )
+                        elif method == "PATCH":
+                            return await client.patch(
+                                url,
+                                headers=request_headers,
+                                params=query_params,
+                                json=body_data if body_data else None,
+                                timeout=30.0,
+                            )
+                        elif method == "DELETE":
+                            return await client.delete(
+                                url, headers=request_headers, params=query_params, timeout=30.0
+                            )
+                        else:
+                            return None
+
                 # Get authentication headers
                 headers = await self.auth_handler.get_headers()
 
-                # Make HTTP request
-                async with httpx.AsyncClient() as client:
-                    if method == "GET":
-                        response = await client.get(
-                            url, headers=headers, params=query_params, timeout=30.0
-                        )
-                    elif method == "POST":
-                        response = await client.post(
-                            url,
-                            headers=headers,
-                            params=query_params,
-                            json=body_data if body_data else None,
-                            timeout=30.0,
-                        )
-                    elif method == "PUT":
-                        response = await client.put(
-                            url,
-                            headers=headers,
-                            params=query_params,
-                            json=body_data if body_data else None,
-                            timeout=30.0,
-                        )
-                    elif method == "PATCH":
-                        response = await client.patch(
-                            url,
-                            headers=headers,
-                            params=query_params,
-                            json=body_data if body_data else None,
-                            timeout=30.0,
-                        )
-                    elif method == "DELETE":
-                        response = await client.delete(
-                            url, headers=headers, params=query_params, timeout=30.0
-                        )
-                    else:
-                        return {"success": False, "error": f"Unsupported HTTP method: {method}"}
+                # Make initial request
+                response = await make_request(headers)
+
+                if not response:
+                    return {"success": False, "error": f"Unsupported HTTP method: {method}"}
+
+                # Handle 401 Unauthorized - Attempt refresh and retry
+                if response.status_code == 401:
+                    print(f"Received 401 for {operation_id}, attempting to refresh token...")
+                    # Force re-authentication
+                    if await self.auth_handler.authenticate(force_refresh=True):
+                        # Get new headers
+                        headers = await self.auth_handler.get_headers()
+                        # Retry request
+                        response = await make_request(headers)
 
                 # Return structured response
                 if response.status_code >= 200 and response.status_code < 300:

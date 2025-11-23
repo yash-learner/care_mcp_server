@@ -17,15 +17,18 @@ class AuthHandler:
         self.token_expiry: Optional[float] = None
         self.default_token_lifetime = 3600  # 1 hour in seconds
 
-    async def authenticate(self) -> bool:
+    async def authenticate(self, force_refresh: bool = False) -> bool:
         """
         Authenticate with Care API.
+
+        Args:
+            force_refresh: Whether to force a token refresh/login.
 
         Returns:
             True if authentication successful, False otherwise.
         """
         # If we already have a token, check if it's still valid
-        if self.access_token:
+        if not force_refresh and self.access_token:
             if not self._is_token_expired():
                 return True
 
@@ -95,9 +98,15 @@ class AuthHandler:
     def _is_token_expired(self) -> bool:
         """Check if the current token is expired."""
         if not self.token_expiry:
-            # If we don't know the expiry, assume it might be expired
+            # If we don't know the expiry, but have credentials, assume we should refresh/login
+            # to be safe and get a known expiry.
+            if self.config.care_username and self.config.care_password:
+                return True
+            # If we only have a token and no credentials, we have to assume it's valid
             return False
-        return time.time() >= self.token_expiry
+
+        # Check if expired or expiring soon (within 5 minutes)
+        return time.time() >= (self.token_expiry - 300)
 
     async def refresh_access_token(self) -> bool:
         """
@@ -113,7 +122,7 @@ class AuthHandler:
         try:
             async with httpx.AsyncClient() as client:
                 response = await client.post(
-                    f"{self.config.care_base_url.rstrip('/')}/api/v1/auth/token/refresh",
+                    f"{self.config.care_base_url.rstrip('/')}/api/v1/auth/token/refresh/",
                     json={"refresh": self.refresh_token},
                     timeout=30.0,
                 )
@@ -121,9 +130,11 @@ class AuthHandler:
                 if response.status_code == 200:
                     data = response.json()
                     self.access_token = data.get("access")
+                    # Update expiry
                     self.token_expiry = time.time() + self.default_token_lifetime
                     return True
                 else:
+                    print(f"Token refresh failed: {response.status_code} - {response.text}")
                     # Refresh failed, try to re-login
                     return await self._login()
 

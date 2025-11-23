@@ -24,7 +24,9 @@ class EnhancementManager:
             description=(
                 "Create a new healthcare facility in the Care system. "
                 "This includes hospitals, clinics, COVID care centers, and other medical institutions. "
-                "Provide details like facility name, type, address, and contact information."
+                "Provide details like facility name, type, address, and contact information. "
+                "For the organization, you just need to pass the last child ID (e.g. Ward ID)."
+                "while searching for organization use org_type: govt, add pass parent: id when searching the children"
             ),
             tags=["facility", "setup", "create", "healthcare"],
             examples=[
